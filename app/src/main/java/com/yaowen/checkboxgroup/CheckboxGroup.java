@@ -2,6 +2,7 @@ package com.yaowen.checkboxgroup;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.IdRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class CheckboxGroup extends LinearLayout {
     private TextView textView;
     private GridLayout grouplayout;
     private String grouptitle;
+    private OnCheckedChangeListener mOnCheckedChangeListener;
 
     public int getColumnCount() {
         return grouplayout.getColumnCount();
@@ -34,7 +36,9 @@ public class CheckboxGroup extends LinearLayout {
     public CheckboxGroup(Context context) {
         super(context);
         this.context = context;
+        setOrientation(VERTICAL);// TODO: 2015/10/20
     }
+
 
     public CheckboxGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,7 +68,7 @@ public class CheckboxGroup extends LinearLayout {
         textView = (TextView) view.findViewById(R.id.grouptitle);
         grouplayout = (GridLayout) view.findViewById(R.id.grouplayout);
         grouplayout.setColumnCount(columnCount);
-        if (grouptitle != null) {
+        if (grouptitle != null) {//grouptitle要做异常处理
             if (titleWidth != -1) {
                 textView.setWidth((int) titleWidth);
             }
@@ -128,6 +132,10 @@ public class CheckboxGroup extends LinearLayout {
         return checkBox;
     }
 
+    public int getIndex(CheckBox checkbox) {
+        return grouplayout.indexOfChild(checkbox);
+    }
+
     /**
      * 动态增加checkBox控件
      *
@@ -154,7 +162,12 @@ public class CheckboxGroup extends LinearLayout {
     public void setCheck(String value, boolean check) {
         CheckBox checkBox = getCheckBox(value);
         if (checkBox != null) {//判断checkBox是否为null，当其不为null时需要做的处理事件
-            checkBox.setChecked(check);//设置该checkBox为选中状态
+            if (checkBox.isChecked() != check) {
+                checkBox.setChecked(check);//设置该checkBox为选中状态
+                if(mOnCheckedChangeListener!=null){
+                    mOnCheckedChangeListener.onCheckedChanged(this, checkBox, checkBox.getTag().toString(), getIndex(checkBox));
+                }
+            }
         }
     }
 
@@ -239,45 +252,6 @@ public class CheckboxGroup extends LinearLayout {
         return check;
     }
 
-   /* *//**
-     * 设置checkBox的title值
-     *
-     * @param value String类型
-     *              通过传入一个value来查找到对应的checkBox
-     * @param title String类型
-     *              通过传入一个title来设置对应的checkBox的值
-     **//*
-    public void setTitle(String value, String title) {
-        //先找出checkBox
-        CheckBox box = getCheckBox(value);
-        if (box != null) {
-            //设置checkBox的title
-            box.setText(title);
-        }
-
-    }
-
-    */
-
-    /**
-     * 获取checkBox的title值
-     *
-     * @param value String类型
-     *              通过传入一个value来查找到对应的checkBox
-     * @return title String类型，为对应checkBox的title的值；
-     * 如果对应checkBox不存在时，返回null；
-     **//*
-    public String getTitle(String value) {
-        //先找出checkBox
-        //取出并返回checkBox的title
-        String title = null;
-        CheckBox box = getCheckBox(value);
-        if (box != null) {
-            title = box.getText().toString();
-        }
-        return title;
-    }*/
-
     /**
      * 设置textView的title值
      *
@@ -298,4 +272,33 @@ public class CheckboxGroup extends LinearLayout {
         textViewText = (String) textView.getText();
         return textViewText;
     }
+
+    /**
+     * update from YAOWEN
+     * on 2015-10-20
+     **/
+
+    /**
+     * 实现了监听的函数
+     **/
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        mOnCheckedChangeListener = listener;
+    }
+
+    /**
+     * <p>实现了OnCheckedChangeListener的接口</p>
+     **/
+    public interface OnCheckedChangeListener {
+        /**
+         * 实现onCheckedChanged的监听
+         *
+         * @param group    the group in which the checked radio button has changed
+         * @param checkBox checkBox
+         * @param value    checkBox的String值
+         * @param index    该checkBox所在的index值
+         */
+        public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, String value, @IdRes int index);
+    }
+
 }
+

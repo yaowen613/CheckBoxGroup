@@ -1,11 +1,13 @@
 package com.yaowen.checkboxgroup;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         init();
+       // RadioGroup
     }
 
     private void init() {
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         final CheckboxGroup checkBoxGroup= (CheckboxGroup) findViewById(R.id.checkboxGroup);
         checkBoxGroup.setTitle("hello test!");
         Log.d("TAG", checkBoxGroup.getTitle());
-        CheckBox box1=checkBoxGroup.getCheckBox("YY");
+        final CheckBox box1=checkBoxGroup.getCheckBox("YY");
         CheckBox box2=checkBoxGroup.getCheckBox(2);
         ArrayList<CheckBox> list=new ArrayList<CheckBox>();
         list=checkBoxGroup.getAllCheckBox();
@@ -63,6 +66,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkBoxGroup.setCheck("4",false);
+            }
+        });
+        final Button listener= (Button) findViewById(R.id.btn_listener);
+        listener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBoxGroup.setCheck("3", true);
+
+            }
+        });
+
+        checkBoxGroup.setOnCheckedChangeListener(new CheckboxGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, String value, @IdRes int index) {
+                Toast.makeText(MainActivity.this,"这是调试语句",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "group" + group.toString() + "checkBox" + checkBox.toString() + "value" + value + "index" + String.valueOf(index), Toast.LENGTH_SHORT).show();
             }
         });
     }

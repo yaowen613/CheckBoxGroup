@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CheckboxGroup.iml" filepath="$PROJECT_DIR$/CheckboxGroup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CheckBoxGroup.git.iml" filepath="$PROJECT_DIR$/CheckBoxGroup.git.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
