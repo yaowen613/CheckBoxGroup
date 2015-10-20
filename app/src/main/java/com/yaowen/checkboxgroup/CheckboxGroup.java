@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,27 +17,17 @@ import java.util.ArrayList;
 /**
  * Created by YAOWEN on 2015/10/15.
  */
-public class CheckboxGroup extends LinearLayout {
+public class CheckboxGroup extends LinearLayout implements CompoundButton.OnCheckedChangeListener, ViewGroup.OnHierarchyChangeListener {
     private TextView textView;
     private GridLayout grouplayout;
     private String grouptitle;
     private OnCheckedChangeListener mOnCheckedChangeListener;
-
-    public int getColumnCount() {
-        return grouplayout.getColumnCount();
-    }
-
-    public void setColumnCount(int columnCount) {
-        grouplayout.setColumnCount(columnCount);
-    }
-
     private int columnCount;
     private Context context;
 
     public CheckboxGroup(Context context) {
         super(context);
         this.context = context;
-        setOrientation(VERTICAL);// TODO: 2015/10/20
     }
 
 
@@ -46,11 +37,18 @@ public class CheckboxGroup extends LinearLayout {
         initView(context, attrs);
     }
 
-
     public CheckboxGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initView(context, attrs);
+    }
+
+    public int getColumnCount() {
+        return grouplayout.getColumnCount();
+    }
+
+    public void setColumnCount(int columnCount) {
+        grouplayout.setColumnCount(columnCount);
     }
 
     /**
@@ -68,13 +66,63 @@ public class CheckboxGroup extends LinearLayout {
         textView = (TextView) view.findViewById(R.id.grouptitle);
         grouplayout = (GridLayout) view.findViewById(R.id.grouplayout);
         grouplayout.setColumnCount(columnCount);
-        if (grouptitle != null) {//grouptitle要做异常处理
+        grouplayout.setOnHierarchyChangeListener(this);
+        if (grouptitle != null) {
             if (titleWidth != -1) {
                 textView.setWidth((int) titleWidth);
             }
             textView.setText(grouptitle);
         }
         typedArray.recycle();
+    }
+
+    /**
+     * 实现了监听的函数
+     **/
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        mOnCheckedChangeListener = listener;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (mOnCheckedChangeListener != null) {
+            mOnCheckedChangeListener.onCheckedChanged(this, (CheckBox) buttonView, isChecked,
+                    buttonView.getTag().toString(), getIndex((CheckBox) buttonView));
+        }
+    }
+
+    @Override
+    public void onChildViewAdded(View parent, View child) {
+        {
+            if (parent == grouplayout && child instanceof CheckBox) {
+                ((CheckBox) child).setOnCheckedChangeListener(this);
+            }
+        }
+    }
+
+    @Override
+    public void onChildViewRemoved(View parent, View child) {
+        if (parent == grouplayout && child instanceof CheckBox) {
+            ((CheckBox) child).setOnCheckedChangeListener(null);
+        }
+
+    }
+
+    /**
+     * 实现了OnCheckedChangeListener的接口
+     **/
+    public interface OnCheckedChangeListener {
+        /**
+         * 实现onCheckedChanged的监听
+         *
+         * @param group    the group in which the checked radio button has changed
+         * @param checkBox checkBox
+         * @param check    boolean类型，判断checkbox的状态是否为选中或者不选中状态
+         * @param value    checkBox的String值
+         * @param index    该checkBox所在的index值
+         */
+        public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, boolean check,
+                                     String value, @IdRes int index);
     }
 
     /**
@@ -132,8 +180,26 @@ public class CheckboxGroup extends LinearLayout {
         return checkBox;
     }
 
+    /**
+     * 获取grouplayout里子控件的Index值
+     *
+     * @param checkbox CheckBox控件
+     * @return grouplayout.indexOfChild(checkbox)
+     * 返回grouplayout里子控件的Index值，int类型
+     **/
     public int getIndex(CheckBox checkbox) {
         return grouplayout.indexOfChild(checkbox);
+    }
+
+    /**
+     * 取消所有选中的checkBox控件
+     **/
+    public void clearAllCheck() {
+        ArrayList<CheckBox> array = getAllCheckBox();
+        for (int i = 0; i < array.size(); i++) {
+            CheckBox item = array.get(i);
+            item.setChecked(false);
+        }
     }
 
     /**
@@ -164,9 +230,7 @@ public class CheckboxGroup extends LinearLayout {
         if (checkBox != null) {//判断checkBox是否为null，当其不为null时需要做的处理事件
             if (checkBox.isChecked() != check) {
                 checkBox.setChecked(check);//设置该checkBox为选中状态
-                if(mOnCheckedChangeListener!=null){
-                    mOnCheckedChangeListener.onCheckedChanged(this, checkBox, checkBox.getTag().toString(), getIndex(checkBox));
-                }
+
             }
         }
     }
@@ -179,6 +243,7 @@ public class CheckboxGroup extends LinearLayout {
      **/
     public void setCheck(String[] values, boolean check) {
         for (int i = 0; i < values.length; i++) {
+            CheckBox checkBox = getCheckBox(values[i]);
             setCheck(values[i], check);//设置该checkBox为选中状态
         }
     }
@@ -189,12 +254,12 @@ public class CheckboxGroup extends LinearLayout {
      * @return values ArrayList
      **/
     public ArrayList<String> getCheckedValues() {
-        ArrayList<String> values = new ArrayList<String>();//新建一个values的Arraylist空集合
-        ArrayList<CheckBox> allCheckBoxes = getAllCheckBox();//新建一个allCheckBoxes的集合来自getAllCheckBox（）；
-        for (int i = 0; i < allCheckBoxes.size(); i++) {//通过allCheckBoxes的大小，遍历一遍
+        ArrayList<String> values = new ArrayList<String>();
+        ArrayList<CheckBox> allCheckBoxes = getAllCheckBox();
+        for (int i = 0; i < allCheckBoxes.size(); i++) {
             CheckBox checkbox = allCheckBoxes.get(i);
             if (checkbox.isChecked()) {
-                values.add(String.valueOf(checkbox.getTag()));//取出该选中了checkBox的tag值
+                values.add(String.valueOf(checkbox.getTag()));
             }
         }
         return values;
@@ -272,33 +337,5 @@ public class CheckboxGroup extends LinearLayout {
         textViewText = (String) textView.getText();
         return textViewText;
     }
-
-    /**
-     * update from YAOWEN
-     * on 2015-10-20
-     **/
-
-    /**
-     * 实现了监听的函数
-     **/
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        mOnCheckedChangeListener = listener;
-    }
-
-    /**
-     * <p>实现了OnCheckedChangeListener的接口</p>
-     **/
-    public interface OnCheckedChangeListener {
-        /**
-         * 实现onCheckedChanged的监听
-         *
-         * @param group    the group in which the checked radio button has changed
-         * @param checkBox checkBox
-         * @param value    checkBox的String值
-         * @param index    该checkBox所在的index值
-         */
-        public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, String value, @IdRes int index);
-    }
-
 }
 
