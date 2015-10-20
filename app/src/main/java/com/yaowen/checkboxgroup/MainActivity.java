@@ -22,11 +22,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-       /* checkBox1= (CheckBox) findViewById(R.id.checkbox1);
+        checkBox1= (CheckBox) findViewById(R.id.checkbox1);
         checkBox2= (CheckBox) findViewById(R.id.checkbox2);
         checkBox3= (CheckBox) findViewById(R.id.checkbox3);
         checkBox4= (CheckBox) findViewById(R.id.checkbox4);
-        //checkBox1.setChecked("YY",true);*/
+        Button btn4= (Button) findViewById(R.id.btn_4);
+        //checkBox1.setChecked("YY",true);
         final CheckboxGroup checkBoxGroup= (CheckboxGroup) findViewById(R.id.checkboxGroup);
         checkBoxGroup.setTitle("hello test!");
         Log.d("TAG", checkBoxGroup.getTitle());
@@ -79,9 +80,16 @@ public class MainActivity extends AppCompatActivity {
 
         checkBoxGroup.setOnCheckedChangeListener(new CheckboxGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, String value, @IdRes int index) {
-                Toast.makeText(MainActivity.this,"这是调试语句",Toast.LENGTH_SHORT).show();
+            public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, boolean check, String value, @IdRes int index) {
+                Toast.makeText(MainActivity.this, "这是调试语句", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "check:" + check + "tag:" + checkBox.getTag().toString(), Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MainActivity.this, "group" + group.toString() + "checkBox" + checkBox.toString() + "value" + value + "index" + String.valueOf(index), Toast.LENGTH_SHORT).show();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "ColumnCount:" + checkBoxGroup.getColumnCount(),Toast.LENGTH_SHORT).show();
             }
         });
     }
