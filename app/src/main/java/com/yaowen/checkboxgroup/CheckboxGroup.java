@@ -127,6 +127,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
 
     /**
      * 获取所有checkBox
+     * @return checkboxes ArrayList<CheckBox>
      **/
     public ArrayList<CheckBox> getAllCheckBox() {
         ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
@@ -162,7 +163,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
     /**
      * 通过偏移量index来获取checkBox
      *
-     * @param index int
+     * @param index int类型
      * @return checkBox 当不存在时候返回null；
      **/
     public CheckBox getCheckBox(int index) {
