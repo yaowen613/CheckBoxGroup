@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <declare-styleable name="CheckboxGroup">
+        <attr name="checkboxGroupTitle" format="string" />
+        <attr name="columnCount" format="integer" />
+        <attr name="titleWidth" format="dimension"/>
+        <attr name="dataName" format="string" />
+    </declare-styleable>
+</resources>
