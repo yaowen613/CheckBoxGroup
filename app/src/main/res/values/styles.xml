@@ -7,11 +7,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <declare-styleable name="RadioGroup" >
+        <attr name="checkboxGroupTitle"  />
+        <attr name="columnCount" />
+        <attr name="titleWidth" />
+        <attr name="dataName" />
+    </declare-styleable>
     <declare-styleable name="CheckboxGroup">
         <attr name="checkboxGroupTitle" format="string" />
         <attr name="columnCount" format="integer" />
         <attr name="titleWidth" format="dimension"/>
         <attr name="dataName" format="string" />
     </declare-styleable>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

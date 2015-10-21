@@ -87,7 +87,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (mOnCheckedChangeListener != null) {
             mOnCheckedChangeListener.onCheckedChanged(this, (CheckBox) buttonView, isChecked,
-                    buttonView.getTag().toString(), getIndex((CheckBox) buttonView));
+                    String.valueOf(buttonView.getTag()), getIndex((CheckBox) buttonView));
         }
     }
 
@@ -245,7 +245,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
     public void setCheck(String[] values, boolean check) {
         for (int i = 0; i < values.length; i++) {
             CheckBox checkBox = getCheckBox(values[i]);
-            setCheck(values[i], check);//设置该checkBox为选中状态
+            setCheck(values[i], check);
         }
     }
 
@@ -322,7 +322,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
      * 设置textView的title值
      *
      * @param value String类型
-     *              通过传入一个value来设置textView的值
+     * 通过传入一个value来设置textView的值
      **/
     public void setTitle(String value) {
         textView.setText(value);
@@ -331,7 +331,8 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
     /**
      * 获取checkBox的title值
      *
-     * @return textViewText String类型，为textView的title的值；如果没有没有返回值，默认为null
+     * @return textViewText String类型，为textView的title的值；
+     * 如果没有没有返回值，默认为null
      **/
     public String getTitle() {
         String textViewText = null;
