@@ -3,6 +3,7 @@
     xmlns:AppTest="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainlayout"
     android:orientation="vertical">
 
     <com.yaowen.checkboxgroup.CheckboxGroup
@@ -51,36 +52,11 @@
         AppTest:dataName="helloworld!"
         AppTest:titleWidth="50dp">
 
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="Hello"
-            android:text="Hello" />
 
-        <RadioButton
-            android:id="@+id/radio2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="yellow"
-            android:text="yellow" />
-
-        <RadioButton
-            android:id="@+id/radio3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="world"
-            android:text="world" />
-
-        <RadioButton
-            android:id="@+id/radio4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="write"
-            android:text="write" />
     </com.yaowen.checkboxgroup.RadioGroup>
 
-    <GridLayout
+    <RadioGroup
+        android:id="@+id/radioGroup2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -89,42 +65,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New RadioButton" />
-
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New RadioButton" />
-    </GridLayout>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test" />
-
-        <Button
-            android:id="@+id/btn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test2" />
-
-        <Button
-            android:id="@+id/btn3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test3" />
-
-        <Button
-            android:id="@+id/btn_listener"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="btn_listener" />
 
         <Button
             android:id="@+id/btn_4"
@@ -156,4 +102,14 @@
             android:layout_height="wrap_content"
             android:text="Add_radio" />
     </LinearLayout>
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton" />
+    <EditText
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

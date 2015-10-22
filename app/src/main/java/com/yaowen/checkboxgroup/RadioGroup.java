@@ -19,6 +19,8 @@ import java.util.ArrayList;
  */
 public class RadioGroup extends LinearLayout implements CompoundButton.OnCheckedChangeListener, ViewGroup.OnHierarchyChangeListener {
     private TextView textView;
+
+
     private GridLayout grouplayout;
     private String grouptitle;
     private OnCheckedChangeListener mOnCheckedChangeListener;
@@ -42,6 +44,10 @@ public class RadioGroup extends LinearLayout implements CompoundButton.OnChecked
         super(context, attrs, defStyleAttr);
         this.context = context;
         initView(context, attrs);
+    }
+
+    public GridLayout getGrouplayout() {
+        return grouplayout;
     }
 
     public int getColumnCount() {
@@ -227,6 +233,23 @@ public class RadioGroup extends LinearLayout implements CompoundButton.OnChecked
     }
 
     /**
+     * 动态添加radioButton，使新加的radiobutton的样式和原先的一样
+     *
+     * @param text  String
+     *              将要设置radioButton的Text值，传入的参数
+     * @param value String
+     *              将要设置radioButton的Tag值，传入的参数
+     * @return radioButton 返回RadioButton的控件
+     **/
+    public RadioButton addRadio(String text, String value) {
+        RadioButton radioButton = (RadioButton) View.inflate(context, R.layout.radiolayout, null);
+        radioButton.setText(text);
+        radioButton.setTag(value);
+        grouplayout.addView(radioButton);
+        return radioButton;
+    }
+
+    /**
      * 动态增加radio控件
      *
      * @param child  view
@@ -241,13 +264,20 @@ public class RadioGroup extends LinearLayout implements CompoundButton.OnChecked
         }
         super.addView(child, index, params);
     }
-    public void removeView(View child){
+
+    /**
+     * 删除RadioButton控件
+     *
+     * @param child RadioButton
+     **/
+    public void removeView(View child) {
         if (child instanceof RadioButton) {
             grouplayout.removeView(child);
             return;
         }
         super.removeView(child);
     }
+
     /**
      * 设置单个radio是否选中;
      * 如果radio不为null时，radio的才被选中；
@@ -268,27 +298,10 @@ public class RadioGroup extends LinearLayout implements CompoundButton.OnChecked
     /**
      * 获取已经被选中的radio的对应的值
      *
-     * @return values ArrayList
-     **/
-    public ArrayList<String> getCheckedValues() {
-        ArrayList<String> values = new ArrayList<String>();
-        ArrayList<RadioButton> allRadioButtones = getAllRadioButton();
-        for (int i = 0; i < allRadioButtones.size(); i++) {
-            RadioButton radio = allRadioButtones.get(i);
-            if (radio.isChecked()) {
-                values.add(String.valueOf(radio.getTag()));
-            }
-        }
-        return values;
-    }
-
-    /**
-     * 获取已经被选中的radio的对应的值
-     *
-     * @return value String类型 获取的是选中的radioButton的tag值；
+     * @return value String类型 获取的是选中的radioButton的tag值，如果值不存在时返回null；
      **/
     public String getCheckedValue() {
-        String value = "";
+        String value = null;
         ArrayList<RadioButton> allRadioButtones = getAllRadioButton();
         for (int i = 0; i < allRadioButtones.size(); i++) {
             RadioButton radio = allRadioButtones.get(i);
@@ -329,26 +342,6 @@ public class RadioGroup extends LinearLayout implements CompoundButton.OnChecked
             isCheck = radiobutton.isChecked();
         }
         return isCheck;
-    }
-
-    /**
-     * 通过传入values的值，判断radio是否全为选中状态
-     *
-     * @param values String[] 传入的参数
-     * @return check 当check为true时，说明radio全为选中
-     **/
-    public boolean isAllChecked(String[] values) {
-        boolean check = true;
-        for (int i = 0; i < values.length; i++) {
-            RadioButton radio = getRadioButton(values[i]);
-            if (radio != null) {
-                check = radio.isChecked();
-                if (!check) {
-                    break;
-                }
-            }
-        }
-        return check;
     }
 
     /**

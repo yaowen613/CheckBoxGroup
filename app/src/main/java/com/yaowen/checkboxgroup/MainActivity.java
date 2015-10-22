@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(MainActivity.this, "titel:" + str, Toast.LENGTH_SHORT).show();
         final RadioButton radio1 = radioGroup.getRadioButton("Hello");
         final RadioButton radio2 = radioGroup.getRadioButton(3);
-        Button addRadio= (Button) findViewById(R.id.btn_Add_radio2);
+        final Button addRadio= (Button) findViewById(R.id.btn_Add_radio2);
         ArrayList<RadioButton> lists = new ArrayList<RadioButton>();
         lists = radioGroup.getAllRadioButton();
         radioGroup.setCheck("Hello", true);
@@ -39,14 +40,6 @@ public class MainActivity extends AppCompatActivity {
         int count = radioGroup.getColumnCount();
         Button btn = (Button) findViewById(R.id.btn_radio);
         Button btn2 = (Button) findViewById(R.id.btn_Remove_radio2);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                radioGroup.setTitle("你好，世界！");
-                radioGroup.setColumnCount(3);
-                radioGroup.setCheck("Hello", false);
-            }
-        });
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, RadioButton radio, boolean check,
@@ -56,23 +49,14 @@ public class MainActivity extends AppCompatActivity {
                         value, Toast.LENGTH_SHORT).show();
             }
         });
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //radioGroup.addView();
-                radioGroup.removeView(radio1);
-                radioGroup.removeView(radio2);
-                Toast.makeText(MainActivity.this, "这是调试语句！！！", Toast.LENGTH_SHORT).show();
-            }
-        });
+        final EditText editText= (EditText) findViewById(R.id.text);
+       final android.widget.RadioGroup radioGroup2= (android.widget.RadioGroup) findViewById(R.id.radioGroup2);
         addRadio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               RadioButton radioButton=new RadioButton(MainActivity.this);
-                radioButton.setText("new bu");
-                radioButton.setTag("ww");
-                radioGroup.addView(radioButton);
-                //radioButton.setChecked(true);
+                String text=editText.getText().toString();
+                String  value=text;
+                radioGroup.addRadio(text,value);
             }
         });
     }
@@ -97,36 +81,6 @@ public class MainActivity extends AppCompatActivity {
         checkBoxGroup.isChecked(1);
         checkBoxGroup.isChecked("YY");
         int i = checkBoxGroup.getColumnCount();
-        Button test = (Button) findViewById(R.id.btn);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkBoxGroup.setColumnCount(3);
-            }
-        });
-        Button btn2 = (Button) findViewById(R.id.btn2);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                checkBoxGroup.setTitle("hello !!!!");
-            }
-        });
-        Button btn3 = (Button) findViewById(R.id.btn3);
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkBoxGroup.setCheck("4", false);
-            }
-        });
-        final Button listener = (Button) findViewById(R.id.btn_listener);
-        listener.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkBoxGroup.setCheck("3", true);
-
-            }
-        });
         checkBoxGroup.setOnCheckedChangeListener(new CheckboxGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CheckboxGroup group, CheckBox checkBox, boolean check, String value, @IdRes int index) {
@@ -136,10 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button btn4 = (Button) findViewById(R.id.btn_4);
+        final EditText editText= (EditText) findViewById(R.id.text);
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "ColumnCount:" + checkBoxGroup.getColumnCount(), Toast.LENGTH_SHORT).show();
+                String text=editText.getText().toString();
+                String value=text;
+                checkBoxGroup.addCheckBox(text,value);
+               // Toast.makeText(MainActivity.this, "ColumnCount:" + checkBoxGroup.getColumnCount(), Toast.LENGTH_SHORT).show();
             }
         });
     }

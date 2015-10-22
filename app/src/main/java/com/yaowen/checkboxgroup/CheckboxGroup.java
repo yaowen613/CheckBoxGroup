@@ -30,7 +30,6 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
         this.context = context;
     }
 
-
     public CheckboxGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
@@ -127,6 +126,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
 
     /**
      * 获取所有checkBox
+     *
      * @return checkboxes ArrayList<CheckBox>
      **/
     public ArrayList<CheckBox> getAllCheckBox() {
@@ -185,7 +185,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
      * 获取grouplayout里子控件的Index值
      *
      * @param checkbox CheckBox控件
-     * @return grouplayout.indexOfChild(checkbox)
+     * @return grouplayout.indexOfChild(checkboxlayout)
      * 返回grouplayout里子控件的Index值，int类型
      **/
     public int getIndex(CheckBox checkbox) {
@@ -201,6 +201,23 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
             CheckBox item = array.get(i);
             item.setChecked(false);
         }
+    }
+
+    /**
+     * 动态添加CheckBox，使新加的checkBox的样式和原先的一样
+     *
+     * @param text  String
+     *              将要设置checkBox的Text值，传入的参数
+     * @param value String
+     *              将要设置checkBox的Tag值，传入的参数
+     * @return checkBox 返回CheckBox的控件
+     **/
+    public CheckBox addCheckBox(String text, String value) {
+        CheckBox checkBox = (CheckBox) View.inflate(context, R.layout.checkboxlayout, null);
+        checkBox.setText(text);
+        checkBox.setTag(value);
+        grouplayout.addView(checkBox);
+        return checkBox;
     }
 
     /**
@@ -231,7 +248,6 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
         if (checkBox != null) {//判断checkBox是否为null，当其不为null时需要做的处理事件
             if (checkBox.isChecked() != check) {
                 checkBox.setChecked(check);//设置该checkBox为选中状态
-
             }
         }
     }
@@ -322,7 +338,7 @@ public class CheckboxGroup extends LinearLayout implements CompoundButton.OnChec
      * 设置textView的title值
      *
      * @param value String类型
-     * 通过传入一个value来设置textView的值
+     *              通过传入一个value来设置textView的值
      **/
     public void setTitle(String value) {
         textView.setText(value);
